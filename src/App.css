@@ -7,3 +7,10 @@
   border-bottom: 1px solid grey;
 }
 
+.main {
+  padding: 15px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}

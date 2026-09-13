@@ -1,8 +1,8 @@
 import { useState } from 'react'
+import Card from "./components/Card.jsx"
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
@@ -15,8 +15,14 @@ function App() {
           <p>Player 2 Score:</p>
         </div>
       </div>
-      <div className='body'>
-
+      <div className='main'>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
+        <Card></Card>
       </div>
     </>
   );
