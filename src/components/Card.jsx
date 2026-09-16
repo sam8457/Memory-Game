@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import "./Card.css";
 
-function Card() {
+function Card({onClick, label}) {
+
+
 
     return (
-        <div className='card'>
+        <div className='card' onClick={onClick}>
             <img src="" alt="image"/>
-            <p>label</p>
+            <p>{label}</p>
         </div>
     );
 };

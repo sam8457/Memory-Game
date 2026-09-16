@@ -3,9 +3,17 @@
 
     height: 105px;
     width: 105px;
+
+    margin: 5px;
 }
 
 .card > img {
     height: 100px;
     width: 100px;
 }
+
+.card:hover {
+    transform: translate(0px, -5px);
+    border: 1px solid purple;
+}
+
