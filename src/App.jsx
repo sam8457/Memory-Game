@@ -7,7 +7,7 @@ function App() {
   const [p1Score, setP1Score] = useState(0);
   const [p2Score, setP2Score] = useState(0);
 
-  const [playerTurn, setPlayerTurn] = useState("p1");
+  const [playerTurn, setPlayerTurn] = useState("Player 1");
 
   let starterBoard = [];
   for (let i=0; i<14; i++) {
@@ -23,37 +23,61 @@ function App() {
 
   const [gameBoard, setGameBoard] = useState(starterBoard);
   
+  // Consider replacing with a single variable
+  // due to react's snapshot rendering
   let selectedCards = [];
   for (let card in gameBoard) {
-    if (card.selected) {
-      selectedCards.append(card.position);
+    if (gameBoard[card].selected) {
+      selectedCards.push(gameBoard[card].spot);
     };
   };
+
+
 
   function toggleSelected(cardSpot){
     let newGameBoard = [...gameBoard];
     newGameBoard[cardSpot]['selected'] = !newGameBoard[cardSpot]['selected'];
     setGameBoard(newGameBoard);
-  }
+  };
+
+  function clearSelected(){
+    // Todo: clear all selected cards
+  };
 
   function handleClick(cardSpot){
 
-    const isFirstClick = selectedCards.length === 0 ? true : false;
-    
+    // Todo: Check if card is complete before allowing
     toggleSelected(cardSpot);
-    console.log(cardSpot);
+    
+    // Since selected cards holds a snapshot of the
+    // previous react render, this cardSpot will not
+    // yet be included in the array.
+    const isSecondClick = selectedCards.length === 1 ? true : false;
+    
+    if (isSecondClick) {
 
-    if (isFirstClick) {
+      let firstCard = gameBoard[selectedCards[0]];
+      let secondCard = gameBoard[cardSpot];
 
+      if (firstCard.id == secondCard.id) {
+        if (playerTurn == "Player 1") {
+          setP1Score(p1Score + 1);
+        } else {
+          setP2Score(p2Score + 1);
+        };
+      } else {
+        if (playerTurn == "Player 1") {
+          setPlayerTurn("Player 2");
+        } else {
+          setPlayerTurn("Player 1");
+        };
+      };
 
-      // TODO: style based on which one is selected
-    } else {
-      // TODO: implement Score mechanic
-      // TODO: check if IDs match, score if yes, keep turn going, don't score and change turns if no
-      // TODO: check which player is active to know whose score to add
+      // Todo: uncomment when function is finished
+      // clearSelected()
+    };
 
-    }
-  }
+  };
 
   return (
     <>
@@ -61,6 +85,7 @@ function App() {
         <h1>
           Memory Game
         </h1>
+        <h2>{playerTurn}'s Turn</h2>
         <div>
           <p>Player 1 Score: {p1Score}</p>
           <p>Player 2 Score: {p2Score}</p>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import "./Card.css";
 
-function Card({key, label, selected, onClick}) {
+function Card({label, selected, onClick}) {
 
     let selectedClass = '';
 
@@ -10,7 +10,7 @@ function Card({key, label, selected, onClick}) {
     }
 
     return (
-        <div className={`card ${selectedClass}`} onClick={onClick}>
+        <div className={'card ' + selectedClass} onClick={onClick}>
             <img src="" alt="image"/>
             <p>{label}</p>
         </div>
