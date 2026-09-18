@@ -8,8 +8,6 @@ function App() {
   const [p2Score, setP2Score] = useState(0);
 
   const [playerTurn, setPlayerTurn] = useState("p1");
-  //const [firstClick, setWhichClick] = useState(true);
-  const [selectedID, setSelectedID] = useState(null);
 
   let starterBoard = [];
   for (let i=0; i<14; i++) {
@@ -25,15 +23,28 @@ function App() {
 
   const [gameBoard, setGameBoard] = useState(starterBoard);
   
+  let selectedCards = [];
+  for (let card in gameBoard) {
+    if (card.selected) {
+      selectedCards.append(card.position);
+    };
+  };
 
+  function toggleSelected(cardSpot){
+    let newGameBoard = [...gameBoard];
+    newGameBoard[cardSpot]['selected'] = !newGameBoard[cardSpot]['selected'];
+    setGameBoard(newGameBoard);
+  }
 
-  function handleClick(cardID){
+  function handleClick(cardSpot){
 
-    // TODO: rename selectedID or whatever it is replaced with by selectedPlace or something less confusing
-    // TODO: replace selectedID by instead looking at gameboard array
-    const isFirstClick = (selectedID === null) ? true : false;
+    const isFirstClick = selectedCards.length === 0 ? true : false;
+    
+    toggleSelected(cardSpot);
+    console.log(cardSpot);
+
     if (isFirstClick) {
-      setSelectedID(cardID)
+
 
       // TODO: style based on which one is selected
     } else {
@@ -41,7 +52,6 @@ function App() {
       // TODO: check if IDs match, score if yes, keep turn going, don't score and change turns if no
       // TODO: check which player is active to know whose score to add
 
-      setSelectedID(null)
     }
   }
 
@@ -61,6 +71,8 @@ function App() {
           <Card
             key={card.spot}
             label={card.label}
+            selected={card.selected}
+            onClick={() => {handleClick(card.spot)}}
           />
         ))}
       </div>

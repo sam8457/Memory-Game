@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import "./Card.css";
 
-function Card({onClick, label}) {
+function Card({key, label, selected, onClick}) {
 
+    let selectedClass = '';
 
+    if (selected) {
+        selectedClass = "selected";
+    }
 
     return (
-        <div className='card' onClick={onClick}>
+        <div className={`card ${selectedClass}`} onClick={onClick}>
             <img src="" alt="image"/>
             <p>{label}</p>
         </div>
