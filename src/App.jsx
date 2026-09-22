@@ -2,24 +2,57 @@ import { useState } from 'react';
 import Card from "./components/Card.jsx";
 import './App.css';
 
+function randomInt(max) {
+  return Math.floor(Math.random() * max);
+};
+
+// Create empty object
+let starterBoard = {};
+// for number of cards, loop through half as many times
+let spotsLeft = [0,1,2,3,4,5,6,7,8,9,10,11,12,13];
+const numPairs = spotsLeft.length / 2;
+for (let i=0; i<numPairs; i++){
+  console.log(spotsLeft)
+  console.log(starterBoard)
+
+  // during each loop, create two cards:
+  // same id, label, and imgUrl
+  // selected and complete false
+  // different random spots from the spots left
+  // stick in object with appropriate label
+  const firstCardSpot = randomInt(spotsLeft.length - 1);
+  spotsLeft.pop(spotsLeft.indexOf(firstCardSpot));
+
+  starterBoard[firstCardSpot] = {
+    id: i,
+    spot: firstCardSpot,
+    imgUrl: '',
+    label: i,
+    selected: false,
+    complete: false,
+  };
+
+  const secondCardSpot = randomInt(spotsLeft.length - 1);
+  spotsLeft.pop(spotsLeft.indexOf(secondCardSpot));
+
+  starterBoard[secondCardSpot] = {
+    id: i,
+    spot: secondCardSpot,
+    imgUrl: '',
+    label: i,
+    selected: false,
+    complete: false,
+  };
+};
+
+starterBoard = Object.values(starterBoard);
+
 function App() {
 
   const [p1Score, setP1Score] = useState(0);
   const [p2Score, setP2Score] = useState(0);
 
   const [playerTurn, setPlayerTurn] = useState("Player 1");
-
-  let starterBoard = [];
-  for (let i=0; i<14; i++) {
-    starterBoard[i] = {
-      id: Math.floor(i/2),
-      spot: i,
-      imgUrl: '',
-      label: i,
-      selected: false,
-      complete: false,
-    }
-  }
 
   const [gameBoard, setGameBoard] = useState(starterBoard);
   
@@ -32,39 +65,55 @@ function App() {
     };
   };
 
-
-
   function toggleSelected(cardSpot){
     let newGameBoard = [...gameBoard];
     newGameBoard[cardSpot]['selected'] = !newGameBoard[cardSpot]['selected'];
     setGameBoard(newGameBoard);
   };
 
+  function setComplete(cardSpot){
+    let newGameBoard = [...gameBoard];
+    newGameBoard[cardSpot]['complete'] = true;
+    setGameBoard(newGameBoard);
+  }
+
   function clearSelected(){
-    // Todo: clear all selected cards
+    let newGameBoard = [...gameBoard];
+    for (let i = 0; i < gameBoard.length; i++) {
+      newGameBoard[i]['selected'] = false; 
+    }
+    setGameBoard(newGameBoard);
   };
 
   function handleClick(cardSpot){
 
     // Todo: Check if card is complete before allowing
-    toggleSelected(cardSpot);
+    const isComplete = gameBoard[cardSpot]['complete'];
+    if (!isComplete) {
+      toggleSelected(cardSpot);
+    }
     
     // Since selected cards holds a snapshot of the
     // previous react render, this cardSpot will not
     // yet be included in the array.
     const isSecondClick = selectedCards.length === 1 ? true : false;
-    
     if (isSecondClick) {
 
       let firstCard = gameBoard[selectedCards[0]];
       let secondCard = gameBoard[cardSpot];
 
-      if (firstCard.id == secondCard.id) {
+      if (firstCard.id == secondCard.id && firstCard.spot != secondCard.spot) {
         if (playerTurn == "Player 1") {
           setP1Score(p1Score + 1);
         } else {
           setP2Score(p2Score + 1);
         };
+
+        const firstCardSpot = gameBoard[selectedCards[0]]['spot'];
+        setComplete(firstCardSpot);
+        setComplete(cardSpot); //2nd card
+        
+        // Todo: mark cards as scored/finished
       } else {
         if (playerTurn == "Player 1") {
           setPlayerTurn("Player 2");
@@ -73,10 +122,8 @@ function App() {
         };
       };
 
-      // Todo: uncomment when function is finished
-      // clearSelected()
+      clearSelected()
     };
-
   };
 
   return (
@@ -97,6 +144,7 @@ function App() {
             key={card.spot}
             label={card.label}
             selected={card.selected}
+            complete={card.complete}
             onClick={() => {handleClick(card.spot)}}
           />
         ))}
