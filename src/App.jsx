@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Card from "./components/Card.jsx";
 import './App.css';
 
+// not inclusive of max
 function randomInt(max) {
   return Math.floor(Math.random() * max);
 };
@@ -11,17 +12,18 @@ let starterBoard = {};
 // for number of cards, loop through half as many times
 let spotsLeft = [0,1,2,3,4,5,6,7,8,9,10,11,12,13];
 const numPairs = spotsLeft.length / 2;
+
 for (let i=0; i<numPairs; i++){
-  console.log(spotsLeft)
-  console.log(starterBoard)
+
 
   // during each loop, create two cards:
   // same id, label, and imgUrl
   // selected and complete false
   // different random spots from the spots left
   // stick in object with appropriate label
-  const firstCardSpot = randomInt(spotsLeft.length - 1);
-  spotsLeft.pop(spotsLeft.indexOf(firstCardSpot));
+  const firstCardIndex = randomInt(spotsLeft.length);
+  const firstCardSpot = spotsLeft[firstCardIndex];
+  spotsLeft.splice(firstCardIndex, 1);
 
   starterBoard[firstCardSpot] = {
     id: i,
@@ -32,8 +34,9 @@ for (let i=0; i<numPairs; i++){
     complete: false,
   };
 
-  const secondCardSpot = randomInt(spotsLeft.length - 1);
-  spotsLeft.pop(spotsLeft.indexOf(secondCardSpot));
+  const secondCardIndex = randomInt(spotsLeft.length);
+  const secondCardSpot = spotsLeft[secondCardIndex];
+  spotsLeft.splice(secondCardIndex, 1);
 
   starterBoard[secondCardSpot] = {
     id: i,
@@ -45,6 +48,7 @@ for (let i=0; i<numPairs; i++){
   };
 };
 
+console.log(starterBoard);
 starterBoard = Object.values(starterBoard);
 
 function App() {
