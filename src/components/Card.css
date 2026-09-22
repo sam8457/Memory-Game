@@ -11,6 +11,10 @@
     margin: 5px;
 }
 
+.card > * {
+    visibility: hidden;
+}
+
 .card > img {
     height: 100px;
     width: 100px;
@@ -25,8 +29,20 @@
     border: 3px solid blue;
 }
 
+.card.selected > * {
+    visibility: visible;
+}
+
 .card.complete {
     border: 1px solid grey;
     text-decoration: line-through;
     opacity: 0.5;
+}
+
+.card.complete > * {
+    visibility: visible;
+}
+
+.card.complete:hover {
+    transform: translate(0);
 }

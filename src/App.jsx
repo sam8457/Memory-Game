@@ -11,10 +11,10 @@ function randomInt(max) {
 let starterBoard = {};
 // for number of cards, loop through half as many times
 let spotsLeft = [0,1,2,3,4,5,6,7,8,9,10,11,12,13];
+// TODO: create list of img URLs, or implement external API
 const numPairs = spotsLeft.length / 2;
 
 for (let i=0; i<numPairs; i++){
-
 
   // during each loop, create two cards:
   // same id, label, and imgUrl
@@ -25,6 +25,7 @@ for (let i=0; i<numPairs; i++){
   const firstCardSpot = spotsLeft[firstCardIndex];
   spotsLeft.splice(firstCardIndex, 1);
 
+  // TODO: put URLs in from list, index via ID/i
   starterBoard[firstCardSpot] = {
     id: i,
     spot: firstCardSpot,
